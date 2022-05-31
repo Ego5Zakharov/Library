@@ -1,0 +1,76 @@
+﻿@page
+@using Library.Models;
+@using LibraryService;
+@using Library.Pages.Shared;
+@model LibraryModel;
+@{
+    ViewData["Title"] = "Library";
+}
+
+<h1>Library List</h1>
+<form method="post" class="card p-3">
+    <div class="row">
+        <div asp-validation-summary="All"></div>
+    </div>
+
+    <div class="form-group mb-0 align-middle">
+        <label asp-for="NewBook.Name">Name</label>
+        <input type="text" asp-for="NewBook.Name" class="mt-5">
+
+       <label asp-for="NewBook.IsAutographFree" class="mt-5">Autograph Free</label>
+       <input type = "checkbox" asp-for="NewBook.IsAutographFree" class="mt-5">
+
+        <label asp-for="NewBook.Price"></label>
+        <input asp-for="NewBook.Price" class="mr-5" />
+
+        <select asp-for="NewBook.Genre"
+        asp-items="Html.GetEnumSelectList<Genre>()" 
+            class="mr-5"></select>
+
+       <button class="btn btn-primary">Add</button>
+    </div>
+</form>
+
+<table
+    class="table mt-5">
+    <thed>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">AutographFree</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thed>
+
+    @foreach(var book in Model.books)
+    {
+        <tr>
+            <td>
+                @book.Name
+            </td>
+
+            <td>
+                @($"{book.Price}")
+            </td>
+
+            <td>
+                @book.IsAutographFree
+            </td>
+
+            <td>
+                @book.Genre
+            </td>
+
+            <td>
+                <form method="post" asp-page-handler = "Delete" asp-route-id = "@book.Id">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}
